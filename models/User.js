@@ -30,6 +30,7 @@ const UserSchema = new mongoose.Schema({
 
 });
 
+// It will run before saving password to database
 UserSchema.pre("save", async function(next) {
     if (!this.isModified("password")) {
         next();

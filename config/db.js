@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
+const dotenv = require('dotenv'); 
+dotenv.config({path:'./config.env'})
 
 const connectDB = async() => {
-        const con = await mongoose.connect(`mongodb+srv://zomato:MongoConnection@cluster0.votdq.mongodb.net/Authentication?retryWrites=true&w=majority`,{
+        const con = await mongoose.connect(process.env.MONGO_URI,{
             useNewUrlParser:true,
             useUnifiedTopology:true,
             //  useFindAndModify:true,
