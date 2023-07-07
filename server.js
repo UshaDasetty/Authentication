@@ -27,6 +27,7 @@ const server = app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
 });
 
+// To handle unhandled rejections (to show only error message, but not lengthy crashed error lines)
 process.on("unhandledRejection", (err, promise) => {
     console.log(`unhandled rejection: ${err}`);
     server.close(() => process.exit(1));

@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const dotenv = require('dotenv'); 
+dotenv.config({path:'./config.env'})
+
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -30,6 +33,7 @@ const UserSchema = new mongoose.Schema({
 
 });
 
+
 // It will run before saving password to database
 UserSchema.pre("save", async function(next) {
     if (!this.isModified("password")) {
@@ -42,11 +46,14 @@ UserSchema.pre("save", async function(next) {
 });
 
 
+// It will check whether the password entered by the user match password in the DB
 UserSchema .methods.matchPasswords = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
 
 
+// To generate Json Web Token(JWT) to authorize the user
+// To get "JWT_SECRET" -> require('crypto').randomBytes(35).toString("hex")  -> type this in the command line
 UserSchema.methods.getSignedToken = function() {
     return jwt.sign({id: this._id}, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE,
